@@ -2,7 +2,6 @@ FROM 2breakfast/caffe-sshd:0.14
 
 MAINTAINER Weitao Zhou <wtzhou@dataman-inc.com>
 
-ADD sources.list.trusty /etc/apt/sources.list
 RUN rm -rf /var/lib/apt/lists/* && apt-get update && apt-get install -y gcc python-pip python-dev && \
    apt-get install -y libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler && \
    apt-get install -y --no-install-recommends libboost-all-dev && \
