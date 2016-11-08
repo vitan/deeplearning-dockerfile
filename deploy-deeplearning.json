@@ -1,0 +1,52 @@
+{
+    "id": "gpu",
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "forcePullImage": false,
+            "image": "2breakfast/deeplearning:allinone",
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                    "containerPort": 22,
+                    "hostPort": 0,
+                    "servicePort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "parameters": [
+                {
+                    "key": "device",
+                    "value": "/dev/nvidia-uvm"
+                },
+                {
+                    "key": "device",
+                    "value": "/dev/nvidia0"
+                },
+                {
+                    "key": "device",
+                    "value": "/dev/nvidiactl"
+                }
+            ],
+            "privileged": false
+        },
+        "volumes": [
+            {
+                "containerPath": "/usr/local/nvidia",
+                "hostPath": "nvidia_driver_352.39",
+                "mode": "RO"
+            },
+            {
+                "containerPath": "/mnt/data",
+                "hostPath": "/mnt/data",
+                "mode": "RW"
+            }
+        ]
+    },
+    "cpus": 4,
+    "disk": 0,
+    "instances": 1,
+    "mem": 2048,
+    "env": {},
+    "cmd": null
+}
