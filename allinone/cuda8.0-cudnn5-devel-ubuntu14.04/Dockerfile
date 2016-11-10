@@ -4,7 +4,7 @@ MAINTAINER Weitao Zhou <wtzhou@dataman-inc.com>
 
 RUN rm -rf /var/lib/apt/lists/* && apt-get update && apt-get install -y --no-install-recommends openssh-server gcc python-pip python-dev \
    libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler libboost-all-dev \
-   libgflags-dev libgoogle-glog-dev liblmdb-dev libatlas-base-dev vim && \
+   libgflags-dev libgoogle-glog-dev liblmdb-dev libatlas-base-dev vim gfortran && \
    rm -rf /var/lib/apt/lists/* && \
    pip install theano && \
    pip install jupyter && \
