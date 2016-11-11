@@ -1,29 +1,17 @@
-FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu14.04
+FROM 2breakfast/deeplearning:cuda8.0-cudnn5-devel-ubuntu14.04
 
 MAINTAINER Weitao Zhou <wtzhou@dataman-inc.com>
 
 ENV CAFFE_VERSION 0.15
-ENV CAFFE_PKG_VERSION 0.15.13-1+cuda8.0
 LABEL com.nvidia.caffe.version="0.15"
 
-RUN rm -rf /var/lib/apt/lists/* && apt-get update && apt-get install -y --no-install-recommends openssh-server gcc python-pip python-dev \
-   libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler libboost-all-dev \
-   libgflags-dev libgoogle-glog-dev liblmdb-dev libatlas-base-dev vim \
-   caffe-nv=$CAFFE_PKG_VERSION caffe-nv-tools=$CAFFE_PKG_VERSION \
-   python-caffe-nv=$CAFFE_PKG_VERSION libcaffe-nv0=$CAFFE_PKG_VERSION && \
-   rm -rf /var/lib/apt/lists/* && \
-   pip install theano && \
-   pip install jupyter && \
-   pip install --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0-cp27-none-linux_x86_64.whl
+RUN curl -SL https://github.com/BVLC/caffe/archive/rc3.tar.gz \
+    | tar xz -C /root/ \
+    && for req in $(cat /root/caffe-rc3/requirements.txt); do pip install $req; done \
+    && sed 's#usr/lib/python2.7#usr/local/lib/python2.7#' Makefile.config.example > Makefile.config \
+    && make -C /root/caffe-rc3 all && make -C /root/caffe-rc3 pycaffe \
+    && make -C /root/caffe-rc3 test && make -C /root/caffe-rc3 runtest
 
-RUN mkdir /var/run/sshd
-RUN echo 'root:password' | chpasswd
+WORKDIR /root/caffe-rc3/build
 
-RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
-
-RUN env |grep -iE "caffe|cuda|nvidia|cudnn" | sed 's/^/export &/g' > /etc/profile.d/caffe-env.sh
-
-EXPOSE 22
-
-CMD ["/usr/sbin/sshd", "-D"]
+RUN env |grep -iE "caffe" | sed 's/^/export &/g' > /etc/profile.d/caffe-env.sh
