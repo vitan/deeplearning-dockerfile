@@ -9,8 +9,7 @@ RUN curl -SL https://github.com/BVLC/caffe/archive/rc3.tar.gz \
     | tar xz -C /root/ \
     && for req in $(cat /root/caffe-rc3/requirements.txt); do pip install $req; done \
     && sed 's#usr/lib/python2.7#usr/local/lib/python2.7#' /root/caffe-rc3/Makefile.config.example > /root/caffe-rc3/Makefile.config \
-    && make -C /root/caffe-rc3 all && make -C /root/caffe-rc3 pycaffe \
-    && make -C /root/caffe-rc3 test && make -C /root/caffe-rc3 runtest
+    && make -C /root/caffe-rc3 all && make -C /root/caffe-rc3 pycaffe
 
 WORKDIR /root/caffe-rc3/build
 
