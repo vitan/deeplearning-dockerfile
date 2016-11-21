@@ -5,7 +5,7 @@ MAINTAINER Weitao Zhou <wtzhou@dataman-inc.com>
 ENV CAFFE_VERSION 0.15
 ENV CAFFE_PATH /root/caffe-rc3
 ENV CAFFE_EXE_PATH ${CAFFE_PATH}/build
-ENV PYTHONPATH ${CAFFE_PATH}/python
+ENV PYTHONPATH ${CAFFE_PATH}/python:${PYTHONPATH}
 
 LABEL com.nvidia.caffe.version="0.15"
 
